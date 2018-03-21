@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 
-var SPEED = 200
+var SPEED = 150
 var gun_direction = Vector2(1,0)
 var direction = Vector2(1,0)
 var just_shot = true
@@ -24,18 +24,39 @@ func merge_angles(from, to, p=0.5):
 	
 func shoot():
 	print("shoot")
+ 
+func deadzone_normalize(input, min_len=0.2, max_len=0.95):
+	var l = input.length()
+	if l > max_len:
+		return input.normalized()
+	
+	if l < min_len:
+		return Vector2()
+		
+	var sc = (l - min_len) / (max_len - min_len)
+	return input.normalized() * sc
 
 func _physics_process(delta):
 	var movement = Vector2()
-	if Input.is_action_pressed("ui_left"):
-		movement.x = -1
-	elif Input.is_action_pressed("ui_right"):
-		movement.x = 1
-		
-	if Input.is_action_pressed("ui_up"):
-		movement.y = -1
-	elif Input.is_action_pressed("ui_down"):
-		movement.y = 1
+	var have_joystick = false
+	
+	var joy_movement = Vector2(Input.get_joy_axis(0, JOY_AXIS_0), Input.get_joy_axis(0, JOY_AXIS_1))
+	if joy_movement.length_squared() > 0:
+		joy_movement = deadzone_normalize(joy_movement)
+		if joy_movement.length_squared() > 0:
+			movement = joy_movement
+			have_joystick = true
+	
+	if not have_joystick:
+		if Input.is_action_pressed("ui_left"):
+			movement.x = -1
+		elif Input.is_action_pressed("ui_right"):
+			movement.x = 1
+			
+		if Input.is_action_pressed("ui_up"):
+			movement.y = -1
+		elif Input.is_action_pressed("ui_down"):
+			movement.y = 1
 		
 	
 	if Input.is_action_pressed("ui_accept"):
