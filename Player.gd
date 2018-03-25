@@ -4,7 +4,7 @@ extends KinematicBody2D
 var SPEED = 150
 var gun_direction = Vector2(1,0)
 var direction = Vector2(1,0)
-var just_shot = true
+var just_shot = false
 
 func _ready():
 	pass
@@ -23,8 +23,18 @@ func merge_angles(from, to, p=0.5):
 	return Vector2(cos(rad), sin(rad))
 	
 func shoot():
-	print("shoot")
- 
+	if just_shot:
+		return
+	
+	just_shot = true
+	var Bullet = load("res://Bullet.tscn")
+	var b = Bullet.instance()
+	# b.set_linear_velocity(gun_direction * 100)
+	b.position = position
+	b.direction = gun_direction
+	get_parent().add_child(b)
+	$ShootTimer.start()
+	 
 func deadzone_normalize(input, min_len=0.2, max_len=0.95):
 	var l = input.length()
 	if l > max_len:
@@ -59,12 +69,8 @@ func _physics_process(delta):
 			movement.y = 1
 		
 	
-	if Input.is_action_pressed("ui_accept"):
-		if not just_shot:
-			shoot()
-		just_shot = true
-	else:
-		just_shot = false
+	if Input.is_action_just_pressed("ui_accept"):
+		shoot()
 	
 	$Gun.set_rotation(gun_direction.angle())
 	if movement.length_squared() != 0:
@@ -77,3 +83,7 @@ func _physics_process(delta):
 		move_and_slide(direction * SPEED)
 		
 	gun_direction = merge_angles(gun_direction, direction, 0.1)
+
+
+func _on_ShootTimer_timeout():
+	just_shot = false
