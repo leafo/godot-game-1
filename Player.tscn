@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://Circle.tscn" type="PackedScene" id=2]
@@ -9,7 +9,26 @@
 custom_solver_bias = 0.0
 extents = Vector2( 6, 6 )
 
-[node name="Player" type="KinematicBody2D" index="0"]
+[sub_resource type="Animation" id=2]
+
+resource_name = "Recoil"
+length = 0.2
+loop = false
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Gun/Barrel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.04, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -3, 0 ), Vector2( 0, 0 ) ]
+}
+
+[node name="Player" type="KinematicBody2D"]
 
 position = Vector2( 120, 70 )
 input_pickable = false
@@ -22,11 +41,15 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Circle" parent="." index="0" instance=ExtResource( 2 )]
+[node name="Body" parent="." index="0" instance=ExtResource( 2 )]
 
-radius = 5
+radius = 6
 
-[node name="Gun" parent="." index="1" instance=ExtResource( 3 )]
+[node name="Gun" type="Node2D" parent="." index="1"]
+
+[node name="Barrel" parent="Gun" index="0" instance=ExtResource( 3 )]
+
+radius = 3
 
 [node name="Debug" type="RichTextLabel" parent="." index="2"]
 
@@ -98,6 +121,17 @@ process_mode = 1
 wait_time = 0.2
 one_shot = true
 autostart = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="6"]
+
+root_node = NodePath("")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/Recoil = SubResource( 2 )
+blend_times = [  ]
+_sections_unfolded = [ "Playback Options" ]
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
 

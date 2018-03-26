@@ -2,10 +2,11 @@ extends KinematicBody2D
 
 var Bullet = preload("res://Bullet.tscn")
 
-var SPEED = 150
+var SPEED = 120
 var gun_direction = Vector2(1,0)
 var direction = Vector2(1,0)
 var just_shot = false
+var last_velocity = Vector2()
 
 func _ready():
 	pass
@@ -29,10 +30,13 @@ func shoot():
 	
 	just_shot = true
 	var b = Bullet.instance()
-	b.position = position
+	b.position = position + gun_direction * $Gun/Barrel.length
 	b.direction = gun_direction
+	b.velocity_adjust = last_velocity
 	get_parent().add_child(b)
 	$ShootTimer.start()
+	print(get_floor_velocity())
+	$AnimationPlayer.play("Recoil")
 	 
 func deadzone_normalize(input, min_len=0.2, max_len=0.95):
 	var l = input.length()
@@ -73,13 +77,9 @@ func _physics_process(delta):
 	
 	$Gun.set_rotation(gun_direction.angle())
 	if movement.length_squared() != 0:
-		direction = movement.normalized()
-		# var gun_angle = gun_direction.angle()
-		# gun_angle += delta
-		# $Debug.text = "%s, %s" % [gun_direction.angle(), Vector2(cos(gun_angle), sin(gun_angle))]
-		# gun_direction = Vector2(cos(gun_angle), sin(gun_angle))
-		
-		move_and_slide(direction * SPEED)
+		direction = movement.normalized()		
+		last_velocity = direction * SPEED
+		move_and_slide(last_velocity)
 		
 	gun_direction = merge_angles(gun_direction, direction, 0.1)
 
