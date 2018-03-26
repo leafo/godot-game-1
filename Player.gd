@@ -35,7 +35,6 @@ func shoot():
 	b.velocity_adjust = last_velocity
 	get_parent().add_child(b)
 	$ShootTimer.start()
-	print(get_floor_velocity())
 	$AnimationPlayer.play("Recoil")
 	 
 func deadzone_normalize(input, min_len=0.2, max_len=0.95):
