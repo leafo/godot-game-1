@@ -1,15 +1,15 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
-[ext_resource path="res://player.png" type="Texture" id=2]
-[ext_resource path="res://turrent.png" type="Texture" id=3]
+[ext_resource path="res://Circle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Capsule.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 6, 6 )
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="KinematicBody2D" index="0"]
 
 position = Vector2( 120, 70 )
 input_pickable = false
@@ -22,17 +22,11 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Body" type="Sprite" parent="." index="0"]
+[node name="Circle" parent="." index="0" instance=ExtResource( 2 )]
 
-texture = ExtResource( 2 )
-_sections_unfolded = [ "Offset", "Transform" ]
+radius = 5
 
-[node name="Gun" type="Sprite" parent="." index="1"]
-
-texture = ExtResource( 3 )
-centered = false
-offset = Vector2( -3, -3 )
-_sections_unfolded = [ "Offset", "Transform" ]
+[node name="Gun" parent="." index="1" instance=ExtResource( 3 )]
 
 [node name="Debug" type="RichTextLabel" parent="." index="2"]
 

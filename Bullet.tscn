@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Bullet.gd" type="Script" id=1]
-[ext_resource path="res://Ball.gd" type="Script" id=2]
+[ext_resource path="res://Circle.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -21,12 +21,14 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Ball" type="Node2D" parent="." index="0"]
+[node name="Circle" type="Node2D" parent="." index="0"]
 
 script = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
 radius = 3
 color = Color( 0.815686, 0.960784, 0.784314, 1 )
+border_color = Color( 0.266667, 0.231373, 0.219608, 1 )
+border_width = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 

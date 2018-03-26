@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Circle.gd" type="Script" id=1]
+
+[node name="Circle" type="Node2D"]
+
+script = ExtResource( 1 )
+_sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
+radius = 3
+color = Color( 0.815686, 0.960784, 0.784314, 1 )
+border_color = Color( 0.266667, 0.231373, 0.219608, 1 )
+border_width = 1
+
+
