@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+var Bullet = preload("res://Bullet.tscn")
 
 var SPEED = 150
 var gun_direction = Vector2(1,0)
@@ -27,9 +28,7 @@ func shoot():
 		return
 	
 	just_shot = true
-	var Bullet = load("res://Bullet.tscn")
 	var b = Bullet.instance()
-	# b.set_linear_velocity(gun_direction * 100)
 	b.position = position
 	b.direction = gun_direction
 	get_parent().add_child(b)
