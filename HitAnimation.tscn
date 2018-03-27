@@ -53,9 +53,9 @@ anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Angle", "Color", "Emission Shape", "Initial Velocity", "Linear Accel", "Orbit Velocity", "Scale", "Spread" ]
 
-[node name="Particles2D" type="Particles2D"]
+[node name="Particles2D" type="Particles2D" index="0"]
 
-emitting = true
+emitting = false
 amount = 8
 lifetime = 0.5
 one_shot = true
@@ -79,7 +79,7 @@ _sections_unfolded = [ "Drawing", "Process Material", "Textures", "Time", "Trans
 [node name="Timer" type="Timer" parent="." index="0"]
 
 process_mode = 1
-wait_time = 2.0
+wait_time = 4.0
 one_shot = true
 autostart = true
 
