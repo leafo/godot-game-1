@@ -3,7 +3,7 @@ extends KinematicBody2D
 var Bullet = preload("res://Bullet.tscn")
 
 const SPEED = 120
-const HIT_FORCE = 30
+const HIT_FORCE = 500
 
 var gun_direction = Vector2(1,0)
 var direction = Vector2(1,0)
@@ -55,6 +55,9 @@ func deadzone_normalize(input, min_len=0.2, max_len=0.95):
 func _physics_process(delta):
 	var movement = Vector2()
 	var have_joystick = false
+	
+	var debug = get_parent().get_node("UI/Debug")
+	debug.text = str(floor($Camera2D.shake_amount * 100)) + " " + str(floor($Camera2D.shake_speed * 100))
 
 	var joy_movement = Vector2(Input.get_joy_axis(0, JOY_AXIS_0), Input.get_joy_axis(0, JOY_AXIS_1))
 	if joy_movement.length_squared() > 0:
@@ -85,8 +88,6 @@ func _physics_process(delta):
 		movement = direction * SPEED
 
 	if push_force.length_squared() != 0:
-		$Debug.text = str(push_force)
-		# print("dampening push force", push_force, Vector2(), push_force.linear_interpolate(Vector2(), 0.5 * delta))
 		movement += push_force
 		push_force = push_force.linear_interpolate(Vector2(), delta / 0.06)
 
@@ -98,13 +99,18 @@ func _physics_process(delta):
 	gun_direction = merge_angles(gun_direction, direction, 0.1)
 
 func check_for_hits():
+	if just_hit:
+		return
+
 	for i in range(get_slide_count()):
 		var collision = get_slide_collision(i)
 		var object = collision.collider
 
 		if "Enemy" in object.get_groups():
 			just_hit = true
-			push_force = (position - object.position) * HIT_FORCE
+			$HitTimer.start()
+			$AnimationPlayer.play("CameraShake")
+			push_force = (position - object.position).normalized() * HIT_FORCE
 
 func _on_ShootTimer_timeout():
 	just_shot = false
