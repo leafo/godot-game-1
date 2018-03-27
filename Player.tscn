@@ -28,9 +28,8 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( -3, 0 ), Vector2( 0, 0 ) ]
 }
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="KinematicBody2D" index="0"]
 
-position = Vector2( 120, 70 )
 input_pickable = false
 collision_layer = 2
 collision_mask = 1
@@ -47,39 +46,33 @@ radius = 6
 
 [node name="Gun" type="Node2D" parent="." index="1"]
 
+editor/display_folded = true
+
 [node name="Barrel" parent="Gun" index="0" instance=ExtResource( 3 )]
 
 radius = 3
 
-[node name="Debug" type="RichTextLabel" parent="." index="2"]
+[node name="Debug" type="Label" parent="." index="2"]
 
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = -16.0
 margin_top = 8.0
-margin_right = 104.0
-margin_bottom = 28.0
+margin_right = 24.0
+margin_bottom = 22.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = true
-mouse_filter = 0
+rect_clip_content = false
+mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 1
-bbcode_enabled = false
-bbcode_text = ""
-visible_characters = -1
+size_flags_vertical = 4
+text = "Hello"
 percent_visible = 1.0
-meta_underlined = true
-tab_size = 4
-text = "DEBUG"
-scroll_active = true
-scroll_following = false
-selection_enabled = false
-override_selected_font_color = false
-_sections_unfolded = [ "BBCode", "Rect", "Visibility" ]
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
 
 [node name="Camera2D" type="Camera2D" parent="." index="3"]
 
@@ -122,7 +115,14 @@ wait_time = 0.2
 one_shot = true
 autostart = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="6"]
+[node name="HitTimer" type="Timer" parent="." index="6"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = true
+autostart = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="7"]
 
 root_node = NodePath("")
 autoplay = ""
@@ -134,5 +134,7 @@ blend_times = [  ]
 _sections_unfolded = [ "Playback Options" ]
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
+
+[connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]
 
 
