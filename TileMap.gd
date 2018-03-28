@@ -15,24 +15,39 @@ func auto_tile():
 	for cell_position in get_used_cells():
 		var tile_id =  get_cellv(cell_position)
 		if tile_names[tile_id] == "Auto": 
-			print("found auto tile", cell_position)
-
 			var above_open = tile_is_open(tile_names, cell_position.x, cell_position.y - 1)
 			var below_open = tile_is_open(tile_names, cell_position.x, cell_position.y + 1)
 			var left_open  = tile_is_open(tile_names, cell_position.x - 1, cell_position.y)
 			var right_open = tile_is_open(tile_names, cell_position.x + 1, cell_position.y)
 
-			if above_open:
-				set_cellv(cell_position, tiles_by_name["Wall"], true, true, false)
+			var flip_x = false
+			var flip_y = false
+			var transpose = false
+			var set_type = "Wall"
 
-			if below_open:
-				set_cellv(cell_position, tiles_by_name["Wall"], false, false, false)
+			if above_open and not left_open:
+				flip_x = true
+				flip_y = true
+				if right_open:
+					set_type = "Corner"
+			elif below_open and not right_open:
+				if left_open:
+					set_type = "Corner"
+			elif left_open:
+				flip_x = true
+				transpose = true
+				if above_open:
+					set_type = "Corner"
+			elif right_open:
+				flip_y = true
+				transpose = true
+				if below_open:
+					set_type = "Corner"
+			else:
+				set_cellv(cell_position, -1)
+				continue
 
-			if left_open:
-				set_cellv(cell_position, tiles_by_name["Wall"], true, false, true)
-
-			if right_open:
-				set_cellv(cell_position, tiles_by_name["Wall"], false, true, true)
+			set_cellv(cell_position, tiles_by_name[set_type], flip_x, flip_y, transpose)
 
 func _ready():
 	auto_tile()
