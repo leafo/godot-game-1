@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://LevelWarp.gd" type="Script" id=1]
+[ext_resource path="res://Rectangle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Rectangle.gd" type="Script" id=3]
+[ext_resource path="res://ScaleAnimation.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 10 )
+
+[sub_resource type="Animation" id=1]
+
+resource_name = "Scale"
+length = 1.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1, 1 ) ]
+}
+
+[node name="LevelWarp" type="Area2D"]
+
+position = Vector2( 74.2792, 63.9516 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_layer = 0
+collision_mask = 2
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision" ]
+warp_to = null
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
+
+shape = SubResource( 2 )
+
+[node name="Rectangle" type="Node2D" parent="." index="1" instance=ExtResource( 2 )]
+
+script = ExtResource( 3 )
+_sections_unfolded = [ "Transform" ]
+color = Color( 0.815686, 0.960784, 0.784314, 1 )
+size = 15.0
+
+[node name="ScaleAnimation" type="AnimationPlayer" parent="Rectangle" index="0"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 2.0
+anims/Scale = SubResource( 1 )
+blend_times = [  ]
+script = ExtResource( 4 )
+_sections_unfolded = [ "Playback Options" ]
+
+

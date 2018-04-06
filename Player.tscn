@@ -10,7 +10,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 6, 6 )
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 
 resource_name = "CameraShake"
 length = 1.0
@@ -41,9 +41,8 @@ tracks/1/keys = {
 "values": [ 4.0, 1.0 ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=3]
 
-resource_name = "Recoil"
 length = 0.2
 loop = false
 step = 0.01
@@ -60,7 +59,9 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( -3, 0 ), Vector2( 0, 0 ) ]
 }
 
-[node name="Player" type="KinematicBody2D" index="0"]
+[node name="Player" type="KinematicBody2D" groups=[
+"Player",
+]]
 
 input_pickable = false
 collision_layer = 2
@@ -165,8 +166,8 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/CameraShake = SubResource( 3 )
-anims/Recoil = SubResource( 2 )
+anims/CameraShake = SubResource( 2 )
+anims/Recoil = SubResource( 3 )
 blend_times = [  ]
 _sections_unfolded = [ "Playback Options" ]
 
